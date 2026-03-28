@@ -45,7 +45,7 @@ const AnimatedCounter = ({ target, suffix }: { target: number; suffix: string })
 };
 
 export const Stats = () => (
-  <section className="py-20 relative overflow-hidden">
+  <section id="trust" className="py-20 relative overflow-hidden">
     {/* Section divider */}
     <div className="section-divider absolute top-0 left-0 right-0" />
     <div className="section-divider absolute bottom-0 left-0 right-0" />

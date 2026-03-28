@@ -2,104 +2,144 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { FACULTIES } from '../../constants';
 import { SectionHeading } from '../ui/SectionHeading';
-import { GraduationCap, Award, BookOpen, Star } from 'lucide-react';
+import { Award, Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '../../lib/utils';
 
 export const FacultySection = () => {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-      },
-    },
-  };
+  const [index, setIndex] = React.useState(0);
+  const [perView, setPerView] = React.useState(1);
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] } as any
-    },
-  };
+  React.useEffect(() => {
+    const upd = () => {
+      const w = window.innerWidth;
+      if (w >= 1024) setPerView(Math.min(4, FACULTIES.length));
+      else if (w >= 768) setPerView(Math.min(2, FACULTIES.length));
+      else setPerView(1);
+    };
+    upd();
+    window.addEventListener('resize', upd, { passive: true });
+    return () => window.removeEventListener('resize', upd);
+  }, []);
+
+  const maxStart = Math.max(0, FACULTIES.length - perView);
+
+  React.useEffect(() => {
+    setIndex((i) => Math.min(i, maxStart));
+  }, [maxStart]);
+
+  const prev = () => setIndex((i) => Math.max(0, i - 1));
+  const next = () => setIndex((i) => Math.min(maxStart, i + 1));
+
+  const visible = FACULTIES.slice(index, index + perView);
+  const pages = maxStart + 1;
 
   return (
-    <section className="py-24 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-[500px] h-[500px] bg-amber-600/5 rounded-full blur-[120px] pointer-events-none" />
-      
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <SectionHeading 
-          title="Our Expert Faculty" 
-          subtitle="Learn from the best minds in the field who have guided thousands of students to success in the Civil Services Examination."
-          accent="Top Mentors"
-        />
+    <section id="mentors" className="py-24 relative overflow-hidden bg-zinc-950/50">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-600/5 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-600/3 rounded-full blur-[120px] pointer-events-none" />
 
-        <motion.div 
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16"
-        >
-          {FACULTIES.map((faculty) => (
-            <motion.div
-              key={faculty.id}
-              variants={itemVariants}
-              className="group relative"
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-12">
+          <SectionHeading
+            title="Expert Faculty"
+            subtitle="Guidance from India's most dedicated UPSC mentors."
+            accent="The Mentors"
+            centered={false}
+            className="mb-0"
+          />
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={prev}
+              disabled={index === 0}
+              className="w-12 h-12 rounded-full glass border border-zinc-800 hover:border-amber-500/40 hover:bg-amber-600/10 flex items-center justify-center text-zinc-400 hover:text-amber-500 transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none"
             >
-              <div className="relative h-full glass rounded-[32px] overflow-hidden border border-zinc-800/80 hover:border-amber-500/30 transition-all duration-500 card-hover">
-                {/* Image Container */}
-                <div className="relative h-72 overflow-hidden">
-                  <img 
-                    src={faculty.image} 
-                    alt={faculty.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-                  
-                  {/* Experience Badge */}
-                  <div className="absolute top-4 right-4 bg-amber-600/90 backdrop-blur-md text-white text-[10px] font-black px-3 py-1.5 rounded-full shadow-xl uppercase tracking-wider border border-white/20">
-                    {faculty.experience} EXP
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+            <button
+              type="button"
+              onClick={next}
+              disabled={index >= maxStart}
+              className="w-12 h-12 rounded-full glass border border-zinc-800 hover:border-amber-500/40 hover:bg-amber-600/10 flex items-center justify-center text-zinc-400 hover:text-amber-500 transition-all duration-300 disabled:opacity-40 disabled:pointer-events-none"
+            >
+              <ChevronRight className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+
+        <div
+          className={cn(
+            'grid gap-6 min-h-[300px]',
+            perView >= 4 && 'sm:grid-cols-2 lg:grid-cols-4',
+            perView === 2 && 'md:grid-cols-2',
+            perView === 1 && 'grid-cols-1'
+          )}
+        >
+          {visible.map((faculty) => (
+            <motion.div
+              key={`${faculty.id}-${index}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="group"
+            >
+              <div className="glass rounded-[24px] overflow-hidden border border-zinc-800/80 hover:border-amber-500/30 transition-all duration-500 hover:shadow-2xl hover:shadow-amber-900/10 bg-zinc-900/40 backdrop-blur-md h-full">
+                <div className="p-6 pb-2 text-center">
+                  <div className="relative inline-block">
+                    <div className="w-28 h-28 mx-auto rounded-full overflow-hidden border-2 border-amber-500/20 group-hover:border-amber-500/50 transition-colors duration-500">
+                      <img
+                        src={faculty.image}
+                        alt={faculty.name}
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                      />
+                    </div>
+                    <div className="absolute -bottom-1 right-2 w-7 h-7 bg-amber-600 rounded-full flex items-center justify-center border-2 border-zinc-900">
+                      <Star className="w-3.5 h-3.5 fill-white text-white" />
+                    </div>
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-8 space-y-4">
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2 text-amber-500 text-[10px] font-black uppercase tracking-widest">
-                      <BookOpen className="w-3 h-3" />
+                <div className="p-6 pt-2 text-center space-y-3">
+                  <div className="space-y-0.5">
+                    <div className="text-amber-500 text-[9px] font-black uppercase tracking-widest opacity-80">
                       {faculty.subject}
                     </div>
-                    <h3 className="text-2xl font-black text-white group-hover:text-amber-400 transition-colors" style={{ fontFamily: 'Outfit, sans-serif' }}>
+                    <h3 className="text-lg font-black text-white" style={{ fontFamily: 'Outfit, sans-serif' }}>
                       {faculty.name}
                     </h3>
                   </div>
 
-                  <p className="text-zinc-500 text-sm leading-relaxed min-h-[48px]">
+                  <p className="text-zinc-500 text-[11px] leading-tight line-clamp-2 px-2">
                     {faculty.expertise}
                   </p>
 
-                  <div className="pt-4 border-t border-zinc-800/50 flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 text-zinc-400 text-xs font-bold">
-                      <GraduationCap className="w-4 h-4 text-amber-500/70" />
-                      Expert Mentor
-                    </div>
-                    <div className="flex items-center gap-1">
-                      {[1, 2, 3, 4, 5].map((_, i) => (
-                        <Star key={i} className="w-3 h-3 fill-amber-500 text-amber-500" />
-                      ))}
-                    </div>
+                  <div className="flex items-center justify-center gap-1.5 pt-2 text-[10px] font-bold text-zinc-400">
+                    <Award className="w-3.5 h-3.5 text-amber-500/60" />
+                    {faculty.experience} Experience
                   </div>
                 </div>
-
-                {/* Decorative neural link (glow effect) */}
-                <div className="absolute -bottom-12 -right-12 w-24 h-24 bg-amber-600/10 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
+
+        {pages > 1 && (
+          <div className="flex justify-center gap-2 mt-10">
+            {Array.from({ length: pages }).map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                onClick={() => setIndex(i)}
+                className={cn(
+                  'h-1.5 rounded-full transition-all duration-300',
+                  index === i ? 'w-6 bg-amber-600' : 'w-2 bg-zinc-800 hover:bg-zinc-700'
+                )}
+                aria-label={`Go to slide ${i + 1}`}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );

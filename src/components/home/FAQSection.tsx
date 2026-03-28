@@ -4,12 +4,14 @@ import { ChevronDown, HelpCircle } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { FAQS } from '../../constants';
 import { cn } from '../../lib/utils';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 export const FAQSection = () => {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  const scrollTo = useScrollToSection();
 
   return (
-    <section className="py-28 bg-zinc-950 relative overflow-hidden">
+    <section id="faq" className="py-28 bg-zinc-950 relative overflow-hidden">
       <div className="absolute inset-0 bg-grid opacity-30" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-amber-600/4 rounded-full blur-[100px] pointer-events-none" />
 
@@ -94,9 +96,13 @@ export const FAQSection = () => {
         >
           <p className="text-zinc-500 text-sm">
             Still have questions?{' '}
-            <a href="#enroll" className="text-amber-500 hover:text-amber-400 font-bold underline underline-offset-2 transition-colors">
+            <button
+              type="button"
+              onClick={() => scrollTo('enroll')}
+              className="text-amber-500 hover:text-amber-400 font-bold underline underline-offset-2 transition-colors"
+            >
               Talk to a counselor →
-            </a>
+            </button>
           </p>
         </motion.div>
       </div>

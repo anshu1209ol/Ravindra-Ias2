@@ -3,22 +3,24 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { TESTIMONIALS } from '../../constants';
+import { Button } from '../ui/Button';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 export const Testimonials = () => {
   const [active, setActive] = React.useState(0);
   const total = TESTIMONIALS.length;
+  const scrollTo = useScrollToSection();
 
   const prev = () => setActive((a) => (a - 1 + total) % total);
   const next = () => setActive((a) => (a + 1) % total);
 
-  // Auto-advance
   React.useEffect(() => {
-    const t = setInterval(next, 5000);
+    const t = setInterval(() => setActive((a) => (a + 1) % total), 5000);
     return () => clearInterval(t);
-  }, []);
+  }, [total]);
 
   return (
-    <section className="py-28 relative overflow-hidden">
+    <section id="testimonials" className="py-28 relative overflow-hidden">
       {/* Ambient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900/30 to-zinc-950" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[300px] bg-amber-600/5 rounded-full blur-[100px]" />
@@ -142,6 +144,12 @@ export const Testimonials = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        <div className="mt-16 flex justify-center">
+          <Button variant="primary" type="button" className="px-8 py-3 rounded-xl" onClick={() => scrollTo('enroll')}>
+            Join the next success story
+          </Button>
         </div>
       </div>
     </section>

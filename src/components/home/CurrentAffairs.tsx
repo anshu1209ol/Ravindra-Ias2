@@ -4,6 +4,7 @@ import { ArrowRight, Tag } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Button } from '../ui/Button';
 import { CURRENT_AFFAIRS } from '../../constants';
+import { useNavigate } from 'react-router-dom';
 
 const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string }> = {
   'Editorial':               { bg: 'bg-purple-500/10', text: 'text-purple-400', border: 'border-purple-500/20' },
@@ -12,7 +13,10 @@ const CATEGORY_COLORS: Record<string, { bg: string; text: string; border: string
   'Polity':                  { bg: 'bg-orange-500/10', text: 'text-orange-400', border: 'border-orange-500/20' },
 };
 
-export const CurrentAffairs = () => (
+export const CurrentAffairs = () => {
+  const navigate = useNavigate();
+
+  return (
   <section id="current-affairs" className="py-28 relative overflow-hidden">
     <div className="absolute right-0 top-0 w-[500px] h-[500px] bg-purple-600/4 rounded-full blur-[120px] pointer-events-none" />
 
@@ -26,7 +30,12 @@ export const CurrentAffairs = () => (
             subtitle="Latest news and editorials curated for UPSC CSE — analysed by our expert team."
           />
         </div>
-        <Button variant="outline" className="mb-4 shrink-0 px-6 py-3">
+        <Button
+          variant="outline"
+          className="mb-4 shrink-0 px-6 py-3"
+          type="button"
+          onClick={() => navigate('/current-affairs')}
+        >
           View Archive <ArrowRight className="w-4 h-4" />
         </Button>
       </div>
@@ -70,7 +79,9 @@ export const CurrentAffairs = () => (
                   <span className="text-zinc-500 text-xs">Ravindra IAS Editorial</span>
                 </div>
                 <motion.button
+                  type="button"
                   whileHover={{ x: 3 }}
+                  onClick={() => navigate('/current-affairs')}
                   className="flex items-center gap-1.5 text-amber-500 hover:text-amber-400 font-bold text-xs transition-colors"
                 >
                   Read Full <ArrowRight className="w-3.5 h-3.5" />
@@ -85,4 +96,5 @@ export const CurrentAffairs = () => (
       </div>
     </div>
   </section>
-);
+  );
+};

@@ -1,8 +1,20 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Link } from 'react-router-dom';
 import { Download, FileText, HelpCircle, Book, ArrowRight } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
-import { Button } from '../ui/Button';
+import { cn } from '../../lib/utils';
+
+function downloadResource(title: string, type: string) {
+  const text = `${title}\n\nSample resource from Ravindra IAS (${type}). Replace this file with your real PDF or quiz link in production.\n\nGenerated: ${new Date().toLocaleDateString()}`;
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${title.replace(/\s+/g, '-').toLowerCase()}-ravindra-ias.txt`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 const RESOURCES = [
   {
@@ -62,9 +74,15 @@ export const Resources = () => (
             subtitle="Expert-curated notes, tests, and current affairs to supercharge your preparation."
           />
         </div>
-        <Button variant="outline" className="mb-4 shrink-0">
+        <Link
+          to="/resources"
+          className={cn(
+            'mb-4 shrink-0 px-6 py-3 rounded-xl font-bold transition-all duration-200 flex items-center justify-center gap-2',
+            'bg-transparent border-2 border-amber-500/70 text-amber-400 hover:bg-amber-600 hover:text-white hover:border-amber-600'
+          )}
+        >
           All Resources <ArrowRight className="w-4 h-4" />
-        </Button>
+        </Link>
       </div>
 
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -98,8 +116,14 @@ export const Resources = () => (
             <div className="flex items-center justify-between">
               <span className="text-zinc-600 text-xs">{res.date}</span>
               <motion.button
+                type="button"
                 whileHover={{ scale: 1.15, rotate: -8 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  downloadResource(res.title, res.type);
+                }}
                 className="w-8 h-8 rounded-lg bg-zinc-800 group-hover:bg-amber-600 border border-zinc-700 group-hover:border-amber-500 flex items-center justify-center transition-all duration-300"
+                aria-label={`Download ${res.title}`}
               >
                 <Download className="w-3.5 h-3.5 text-zinc-400 group-hover:text-white transition-colors" />
               </motion.button>

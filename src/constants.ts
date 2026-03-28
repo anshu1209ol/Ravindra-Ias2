@@ -8,7 +8,21 @@ export const COURSES: Course[] = [
     duration: '6 Months',
     price: '₹24,999',
     features: ['Daily MCQs', 'Weekly Mock Tests', 'Current Affairs Analysis', 'Personal Mentorship'],
-    category: 'Prelims'
+    category: 'Prelims',
+    mode: 'Hybrid',
+    schedule: 'Mon–Sat · 6:30–9:00 PM IST · 2.5 hrs/day',
+    idealFor: 'Working aspirants & repeaters targeting CSE 2026 Prelims with limited time.',
+    outcome: 'Build exam temperament, CSAT safety net, and a reliable 110+ attempt strategy for GS Paper I.',
+    curriculum: [
+      'GS I–IV topic-wise drills + elimination workshops',
+      'CSAT reasoning & comprehension under timed pressure',
+      'Last-mile current affairs capsules aligned to PT pattern',
+    ],
+    stats: [
+      { label: 'Full tests', value: '45+' },
+      { label: 'Live hrs', value: '320+' },
+      { label: 'CA sessions', value: 'Daily' },
+    ],
   },
   {
     id: 'foundation-batch',
@@ -18,7 +32,21 @@ export const COURSES: Course[] = [
     price: '₹89,999',
     features: ['NCERT to Advanced', 'Mains Answer Writing', 'Personalized Strategy', 'Interview Guidance'],
     recommended: true,
-    category: 'Foundation'
+    category: 'Foundation',
+    mode: 'Hybrid',
+    schedule: 'Weekdays + Sunday · Morning & evening batches · 3–4 hrs/day',
+    idealFor: 'First-time aspirants who want a single guided path from zero to interview.',
+    outcome: 'NCERT-to-advanced clarity across GS, structured optional prep, and mains-ready answer writing by month 12.',
+    curriculum: [
+      'PCM pedagogy: Polity → Economy → History → Geography → Science & env.',
+      'Integrated Prelims + Mains modules (no siloed prep)',
+      '1:1 mentorship checkpoints every 6 weeks',
+    ],
+    stats: [
+      { label: 'Mentor calls', value: '12+' },
+      { label: 'AW sheets', value: '400+' },
+      { label: 'Mock panels', value: '8' },
+    ],
   },
   {
     id: 'mains-intensive',
@@ -27,7 +55,21 @@ export const COURSES: Course[] = [
     duration: '4 Months',
     price: '₹19,999',
     features: ['Daily Answer Writing', 'Case Study Workshops', 'Ethics Mastery', 'Essay Guidance'],
-    category: 'Mains'
+    category: 'Mains',
+    mode: 'Online',
+    schedule: 'Daily live · 7:00–10:00 PM IST · Essay & ethics on weekends',
+    idealFor: 'Candidates who have cleared Prelims or are writing Mains in the same cycle.',
+    outcome: 'Publication-ready answers, 10+ Ethics case frameworks, and two scored essay drafts with feedback.',
+    curriculum: [
+      'GS papers I–IV: diagram + keyword discipline',
+      'Ethics: 250-word & case-study templates',
+      'Essay: thesis building + two full evaluations',
+    ],
+    stats: [
+      { label: 'Evaluated answers', value: '120+' },
+      { label: 'Sectionals', value: '24' },
+      { label: 'Model keys', value: 'Included' },
+    ],
   },
   {
     id: 'optional-subjects',
@@ -36,8 +78,22 @@ export const COURSES: Course[] = [
     duration: '5 Months',
     price: '₹29,999',
     features: ['Comprehensive Notes', 'Test Series Included', 'Special Focus on Maps/Diagrams', 'Expert Faculty'],
-    category: 'Optional'
-  }
+    category: 'Optional',
+    mode: 'Hybrid',
+    schedule: 'Tue / Thu / Sat · 8:00–10:30 PM IST',
+    idealFor: 'Aspirants finalising optional choice or pushing score from 250 → 300+.',
+    outcome: 'PYQ-tested notes, map/diagram bank for Geo & History, and PSIR thinkers’ grid for Paper II.',
+    curriculum: [
+      'Section A & B balance with year-wise trend analysis',
+      'Map-based & timeline revision decks',
+      'Optional-only test series with mentor comments',
+    ],
+    stats: [
+      { label: 'Tests', value: '18' },
+      { label: 'Map sheets', value: '80+' },
+      { label: 'Faculty', value: 'Domain PhDs' },
+    ],
+  },
 ];
 
 export const BATCHES: Batch[] = [

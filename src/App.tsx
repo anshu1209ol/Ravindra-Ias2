@@ -19,8 +19,12 @@ import { FAQSection } from './components/home/FAQSection';
 import { EnrollmentForm } from './components/home/EnrollmentForm';
 import { LiveTicker } from './components/home/LiveTicker';
 import { FacultySection } from './components/home/FacultySection';
+import { FinalCta } from './components/home/FinalCta';
+import { ThemeProvider } from './context/ThemeContext';
+import { PageLoader } from './components/PageLoader';
+import AIChatbot from './components/AIChatbot';
+import { LegalPage } from './pages/LegalPage';
 
-// Page enter animation wrapper
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
   <motion.div
     initial={{ opacity: 0, y: 16 }}
@@ -32,7 +36,7 @@ const PageTransition = ({ children }: { children: React.ReactNode }) => (
   </motion.div>
 );
 
-const HomePage = ({ user }: { user: any }) => (
+const HomePage = ({ user }: { user: unknown }) => (
   <PageTransition>
     <Hero />
     <Stats />
@@ -45,13 +49,39 @@ const HomePage = ({ user }: { user: any }) => (
     <CourseFinder />
     <Resources />
     <Testimonials />
+    <FinalCta />
     <FAQSection />
     <EnrollmentForm user={user} />
   </PageTransition>
 );
 
+function ScrollToHashOnRoute() {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    if (location.pathname !== '/') return;
+
+    const run = () => {
+      const id = location.hash?.replace(/^#/, '');
+      if (id) {
+        window.requestAnimationFrame(() => {
+          document.getElementById(id)?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        });
+      }
+    };
+
+    const t = window.setTimeout(run, 80);
+    return () => window.clearTimeout(t);
+  }, [location.pathname, location.hash]);
+
+  return null;
+}
+
 export default function App() {
-  const [user, setUser] = React.useState<any>(null);
+  const [user, setUser] = React.useState<unknown>(null);
   const location = useLocation();
 
   React.useEffect(() => {
@@ -59,28 +89,37 @@ export default function App() {
     return () => unsubscribe();
   }, []);
 
-  // Scroll to top on route change
   React.useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (location.pathname !== '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }, [location.pathname]);
 
   return (
-    <ErrorBoundary>
-      <div className="min-h-screen bg-zinc-950 text-zinc-200 font-sans overflow-x-hidden">
-        <Navbar user={user} />
-        <AnimatePresence mode="wait">
-          <Routes location={location} key={location.pathname}>
-            <Route path="/" element={<HomePage user={user} />} />
-            <Route path="/courses" element={<PageTransition><Courses /></PageTransition>} />
-            <Route path="/results" element={<PageTransition><ToppersSection /></PageTransition>} />
-            <Route path="/current-affairs" element={<PageTransition><CurrentAffairs /></PageTransition>} />
-            <Route path="/resources" element={<PageTransition><Resources /></PageTransition>} />
-            <Route path="/about" element={<PageTransition><WhyChoose /></PageTransition>} />
-          </Routes>
-        </AnimatePresence>
-        <LiveTicker />
-        <Footer />
-      </div>
-    </ErrorBoundary>
+    <ThemeProvider>
+      <ErrorBoundary>
+        <PageLoader />
+        <div className="min-h-screen bg-zinc-950 text-zinc-200 font-sans overflow-x-hidden transition-colors duration-300">
+          <ScrollToHashOnRoute />
+          <Navbar user={user} />
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<HomePage user={user} />} />
+              <Route path="/courses" element={<PageTransition><Courses /></PageTransition>} />
+              <Route path="/results" element={<PageTransition><ToppersSection /></PageTransition>} />
+              <Route path="/current-affairs" element={<PageTransition><CurrentAffairs /></PageTransition>} />
+              <Route path="/resources" element={<PageTransition><Resources /></PageTransition>} />
+              <Route path="/about" element={<PageTransition><WhyChoose /></PageTransition>} />
+              <Route path="/privacy" element={<PageTransition><LegalPage kind="privacy" /></PageTransition>} />
+              <Route path="/terms" element={<PageTransition><LegalPage kind="terms" /></PageTransition>} />
+              <Route path="/cookies" element={<PageTransition><LegalPage kind="cookies" /></PageTransition>} />
+            </Routes>
+          </AnimatePresence>
+          <LiveTicker />
+          <Footer />
+          <AIChatbot />
+        </div>
+      </ErrorBoundary>
+    </ThemeProvider>
   );
 }

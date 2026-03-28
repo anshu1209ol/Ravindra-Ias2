@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Calendar, Clock, Wifi, MapPin, ArrowRight } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { BATCHES } from '../../constants';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 const MODE_STYLES: Record<string, { bg: string; text: string; dot: string }> = {
   Hybrid: { bg: 'bg-amber-500/10 border border-amber-500/20', text: 'text-amber-400', dot: 'bg-amber-400' },
@@ -10,8 +11,11 @@ const MODE_STYLES: Record<string, { bg: string; text: string; dot: string }> = {
   Offline: { bg: 'bg-blue-500/10 border border-blue-500/20', text: 'text-blue-400', dot: 'bg-blue-400' },
 };
 
-export const BatchSchedule = () => (
-  <section className="py-28 bg-zinc-950 relative overflow-hidden">
+export const BatchSchedule = () => {
+  const scrollTo = useScrollToSection();
+
+  return (
+  <section id="batches" className="py-28 bg-zinc-950 relative overflow-hidden">
     <div className="absolute inset-0 bg-grid opacity-50" />
     <div className="max-w-7xl mx-auto px-6 relative z-10">
       <SectionHeading
@@ -65,7 +69,9 @@ export const BatchSchedule = () => (
                 </span>
 
                 <motion.button
+                  type="button"
                   whileHover={{ x: 4 }}
+                  onClick={() => scrollTo('enroll')}
                   className="flex items-center gap-1.5 text-amber-500 hover:text-amber-400 font-bold text-sm transition-colors group/btn"
                 >
                   Inquire
@@ -89,10 +95,15 @@ export const BatchSchedule = () => (
           <p className="text-white font-bold">Can't find the right batch?</p>
           <p className="text-zinc-400 text-sm">Talk to our counselor and get a custom schedule designed for you.</p>
         </div>
-        <button className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl transition-colors shrink-0">
+        <button
+          type="button"
+          onClick={() => scrollTo('enroll')}
+          className="px-6 py-3 bg-amber-600 hover:bg-amber-500 text-white font-bold rounded-xl transition-colors shrink-0"
+        >
           Talk to Counselor
         </button>
       </motion.div>
     </div>
   </section>
-);
+  );
+};

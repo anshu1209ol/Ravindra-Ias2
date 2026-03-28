@@ -19,10 +19,10 @@ const COURSES_LINKS = [
 ];
 
 const SOCIAL = [
-  { Icon: Facebook, href: '#', label: 'Facebook' },
-  { Icon: Twitter, href: '#', label: 'Twitter' },
-  { Icon: Instagram, href: '#', label: 'Instagram' },
-  { Icon: Youtube, href: '#', label: 'YouTube' },
+  { Icon: Facebook, href: 'https://facebook.com', label: 'Facebook' },
+  { Icon: Twitter, href: 'https://twitter.com', label: 'Twitter' },
+  { Icon: Instagram, href: 'https://instagram.com', label: 'Instagram' },
+  { Icon: Youtube, href: 'https://youtube.com', label: 'YouTube' },
 ];
 
 export const Footer = () => {
@@ -141,7 +141,12 @@ export const Footer = () => {
                 <div>
                   <div className="text-white font-bold text-sm mb-0.5">New Delhi</div>
                   <p className="text-xs leading-relaxed">Old Rajinder Nagar, New Delhi - 110060</p>
-                  <a href="#" className="mt-1.5 flex items-center gap-1 text-amber-500 text-[11px] hover:text-amber-400 transition-colors">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Old+Rajinder+Nagar+New+Delhi+110060"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1.5 flex items-center gap-1 text-amber-500 text-[11px] hover:text-amber-400 transition-colors"
+                  >
                     Get Directions <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
@@ -151,7 +156,12 @@ export const Footer = () => {
                 <div>
                   <div className="text-white font-bold text-sm mb-0.5">Chennai</div>
                   <p className="text-xs leading-relaxed">Anna Nagar, Chennai - 600040</p>
-                  <a href="#" className="mt-1.5 flex items-center gap-1 text-amber-500 text-[11px] hover:text-amber-400 transition-colors">
+                  <a
+                    href="https://www.google.com/maps/search/?api=1&query=Anna+Nagar+Chennai+600040"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-1.5 flex items-center gap-1 text-amber-500 text-[11px] hover:text-amber-400 transition-colors"
+                  >
                     Get Directions <ExternalLink className="w-3 h-3" />
                   </a>
                 </div>
@@ -195,10 +205,10 @@ export const Footer = () => {
         {/* Bottom bar */}
         <div className="py-6 border-t border-zinc-900 flex flex-col md:flex-row justify-between items-center gap-4 text-zinc-600 text-xs">
           <p>© 2026 Ravindra IAS Academy. All rights reserved.</p>
-          <div className="flex gap-6">
-            {['Privacy Policy', 'Terms of Service', 'Cookie Policy'].map(item => (
-              <Link key={item} to="#" className="hover:text-zinc-400 transition-colors">{item}</Link>
-            ))}
+          <div className="flex flex-wrap gap-4 sm:gap-6 justify-center">
+            <Link to="/privacy" className="hover:text-zinc-400 transition-colors">Privacy Policy</Link>
+            <Link to="/terms" className="hover:text-zinc-400 transition-colors">Terms of Service</Link>
+            <Link to="/cookies" className="hover:text-zinc-400 transition-colors">Cookie Policy</Link>
           </div>
         </div>
       </div>

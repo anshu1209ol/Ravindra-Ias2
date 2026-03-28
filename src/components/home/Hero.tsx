@@ -1,8 +1,9 @@
 import React from 'react';
 import { motion, useMotionValue, useSpring, useTransform } from 'motion/react';
 import { Star, ArrowRight, Play, CheckCircle2, Users, Award, BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '../ui/Button';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 const FLOATING_BADGES = [
   { icon: CheckCircle2, title: 'Daily Answer Writing', sub: 'Expert Evaluated', color: 'from-green-500/20 to-green-500/5', border: 'border-green-500/20', text: 'text-green-400', delay: 0 },
@@ -35,7 +36,11 @@ const Counter = ({ target, suffix = '' }: { target: number; suffix?: string }) =
   return <span ref={ref}>{count}{suffix}</span>;
 };
 
+const DEMO_VIDEO_URL = 'https://www.youtube.com/watch?v=EngW7tLk6R8';
+
 export const Hero = () => {
+  const scrollTo = useScrollToSection();
+  const navigate = useNavigate();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const springX = useSpring(mouseX, { stiffness: 60, damping: 20 });
@@ -109,19 +114,34 @@ export const Hero = () => {
           </motion.p>
 
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
-            <Link to="/courses">
-              <Button variant="primary" className="px-8 py-4 text-base font-bold rounded-2xl shadow-xl shadow-amber-900/30 group animate-pulse-glow">
-                Start Your Journey
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-            <Button variant="secondary" className="px-8 py-4 text-base font-bold rounded-2xl border-zinc-700">
+            <Button
+              variant="primary"
+              className="px-8 py-4 text-base font-bold rounded-2xl shadow-xl shadow-amber-900/30 group animate-pulse-glow"
+              onClick={() => scrollTo('enroll')}
+            >
+              Enroll Now
+              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            <Button
+              variant="secondary"
+              className="px-8 py-4 text-base font-bold rounded-2xl border-zinc-700"
+              onClick={() => navigate('/courses')}
+            >
               <div className="w-8 h-8 rounded-full bg-amber-600 flex items-center justify-center shrink-0">
                 <Play className="w-4 h-4 fill-white text-white ml-0.5" />
               </div>
-              Watch Demo
+              Explore Courses
             </Button>
           </motion.div>
+          <motion.p variants={itemVariants} className="-mt-2">
+            <button
+              type="button"
+              onClick={() => window.open(DEMO_VIDEO_URL, '_blank', 'noopener,noreferrer')}
+              className="text-sm text-zinc-500 hover:text-amber-400 font-semibold underline-offset-4 hover:underline transition-colors"
+            >
+              Watch a 2‑min class experience →
+            </button>
+          </motion.p>
 
           {/* Social proof */}
           <motion.div variants={itemVariants} className="flex items-center gap-6 pt-2">

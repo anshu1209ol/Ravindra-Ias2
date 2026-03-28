@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useSearchParams } from 'react-router-dom';
 import { Phone, Mail, MapPin, CheckCircle2, Loader2, Shield, Clock, Award } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { COURSES } from '../../constants';
@@ -14,13 +15,41 @@ const TRUST_BADGES = [
 const INPUT_CLASS =
   'w-full bg-zinc-800/70 border border-zinc-700/60 rounded-xl px-4 py-3.5 text-white text-sm placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-amber-500/60 focus:border-amber-500/40 transition-all duration-200';
 
+const defaultCourseId =
+  COURSES.find((c) => c.recommended)?.id ?? COURSES[0]?.id ?? 'foundation-batch';
+
 export const EnrollmentForm = ({ user }: { user: any }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isSuccess, setIsSuccess] = React.useState(false);
 
+  const [courseId, setCourseId] = React.useState(defaultCourseId);
+
+  React.useEffect(() => {
+    const q = searchParams.get('course');
+    if (q && COURSES.some((c) => c.id === q)) setCourseId(q);
+    else setCourseId(defaultCourseId);
+  }, [searchParams]);
+
+  const onCourseChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const id = e.target.value;
+    setCourseId(id);
+    setSearchParams(
+      (prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('course', id);
+        return next;
+      },
+      { replace: true }
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!user) { alert('Please sign in to enroll.'); return; }
+    if (!user) {
+      alert('Please sign in to enroll.');
+      return;
+    }
     setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
     const data = {
@@ -28,7 +57,7 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
       name: formData.get('name'),
       email: formData.get('email'),
       phone: formData.get('phone'),
-      courseId: formData.get('course'),
+      courseId,
       status: 'pending',
       createdAt: new Date().toISOString(),
     };
@@ -45,12 +74,10 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
 
   return (
     <section id="enroll" className="py-28 relative overflow-hidden">
-      {/* Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-amber-600/6 rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute inset-0 bg-grid opacity-20" />
 
       <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-2 gap-16 items-center">
-        {/* Left */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -72,7 +99,6 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
             Join thousands of successful aspirants. Fill out the form and our senior counselor will reach out within 24 hours.
           </p>
 
-          {/* Contact info */}
           <div className="space-y-4">
             {[
               { Icon: Phone, label: '+91 98765 43210' },
@@ -80,7 +106,7 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
               { Icon: MapPin, label: 'Old Rajinder Nagar, New Delhi' },
             ].map(({ Icon, label }, i) => (
               <motion.div
-                key={i}
+                key={label}
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
@@ -95,11 +121,10 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
             ))}
           </div>
 
-          {/* Trust badges */}
           <div className="grid grid-cols-3 gap-4 pt-4">
             {TRUST_BADGES.map((b, i) => (
               <motion.div
-                key={i}
+                key={b.label}
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
@@ -114,7 +139,6 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
           </div>
         </motion.div>
 
-        {/* Right: Form */}
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.97 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
@@ -170,8 +194,18 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
                   </div>
                   <div className="space-y-1.5">
                     <label className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest pl-1">Course Interest</label>
-                    <select name="course" required className={INPUT_CLASS + ' cursor-pointer'}>
-                      {COURSES.map(c => <option key={c.id} value={c.id}>{c.title}</option>)}
+                    <select
+                      name="course"
+                      required
+                      value={courseId}
+                      onChange={onCourseChange}
+                      className={INPUT_CLASS + ' cursor-pointer'}
+                    >
+                      {COURSES.map((c) => (
+                        <option key={c.id} value={c.id}>
+                          {c.title}
+                        </option>
+                      ))}
                     </select>
                   </div>
                 </div>
@@ -182,15 +216,25 @@ export const EnrollmentForm = ({ user }: { user: any }) => {
                   className="w-full py-4 text-base font-bold rounded-2xl mt-2 shadow-xl shadow-amber-900/30"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting
-                    ? <><Loader2 className="w-5 h-5 animate-spin" /> Submitting...</>
-                    : 'Apply Now — It\'s Free'}
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" /> Submitting...
+                    </>
+                  ) : (
+                    "Apply Now — It's Free"
+                  )}
                 </Button>
 
                 <p className="text-center text-zinc-600 text-xs">
                   By applying, you agree to our{' '}
-                  <span className="text-zinc-500 hover:text-amber-500 cursor-pointer transition-colors">Terms & Privacy Policy</span>.
-                  No spam, ever.
+                  <a href="/terms" className="text-zinc-500 hover:text-amber-500 transition-colors">
+                    Terms
+                  </a>{' '}
+                  &{' '}
+                  <a href="/privacy" className="text-zinc-500 hover:text-amber-500 transition-colors">
+                    Privacy Policy
+                  </a>
+                  . No spam, ever.
                 </p>
               </form>
             )}

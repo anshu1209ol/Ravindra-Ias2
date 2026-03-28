@@ -16,6 +16,18 @@ export interface Course {
   features: string[];
   recommended?: boolean;
   category: 'Prelims' | 'Mains' | 'Interview' | 'Foundation' | 'Optional';
+  /** Hybrid / Online / Offline */
+  mode: 'Online' | 'Hybrid' | 'Offline';
+  /** Typical class cadence, e.g. weekday evenings */
+  schedule: string;
+  /** One line: best-fit aspirant profile */
+  idealFor: string;
+  /** Promised result focus */
+  outcome: string;
+  /** 3–4 syllabus / focus pillars */
+  curriculum: string[];
+  /** Small stats for the footer strip (tests, hours, etc.) */
+  stats: { label: string; value: string }[];
 }
 
 export interface Topper {

@@ -3,10 +3,14 @@ import { motion } from 'motion/react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { TOPPERS } from '../../constants';
 import { Quote, Award, Sparkles } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 export const ToppersSection = () => {
+  const scrollTo = useScrollToSection();
+
   return (
-    <section id="results" className="py-28 relative overflow-hidden">
+    <section id="toppers" className="py-28 relative overflow-hidden">
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-amber-600/5 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
@@ -84,15 +88,26 @@ export const ToppersSection = () => {
         </div>
 
         {/* View all results button */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.6 }}
-          className="mt-16 text-center"
+          className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-4"
         >
-          <button className="px-8 py-4 bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 font-bold hover:text-white hover:border-amber-500/50 hover:bg-zinc-800 transition-all group">
-            Our Legacy Continues — <span className="text-amber-500 group-hover:text-amber-400">View All Selections</span>
+          <Link
+            to="/results"
+            className="px-8 py-4 bg-zinc-900 border border-zinc-800 rounded-2xl text-zinc-400 font-bold hover:text-white hover:border-amber-500/50 hover:bg-zinc-800 transition-all group inline-block text-center"
+          >
+            Our Legacy Continues —{' '}
+            <span className="text-amber-500 group-hover:text-amber-400">View All Selections</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => scrollTo('enroll')}
+            className="px-8 py-4 rounded-2xl bg-gradient-to-r from-amber-600 to-amber-500 text-white font-bold shadow-lg shadow-amber-900/30 hover:from-amber-500 hover:to-amber-400 transition-all"
+          >
+            Start Your Journey
           </button>
         </motion.div>
       </div>

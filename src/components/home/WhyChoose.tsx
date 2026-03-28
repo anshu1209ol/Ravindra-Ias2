@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Users, BookOpen, CheckCircle2, Trophy, Target, Shield } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
+import { Button } from '../ui/Button';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 const REASONS = [
   {
@@ -54,8 +56,11 @@ const REASONS = [
   },
 ];
 
-export const WhyChoose = () => (
-  <section className="py-28 relative overflow-hidden">
+export const WhyChoose = () => {
+  const scrollTo = useScrollToSection();
+
+  return (
+  <section id="why-us" className="py-28 relative overflow-hidden">
     <div className="absolute inset-0 bg-gradient-to-br from-zinc-950 via-zinc-900/20 to-zinc-950" />
     <div className="absolute bottom-0 right-0 w-[500px] h-[400px] bg-amber-600/4 rounded-full blur-[100px] pointer-events-none" />
 
@@ -88,6 +93,15 @@ export const WhyChoose = () => (
                 <p className="text-zinc-400 text-xs leading-relaxed">{r.desc}</p>
               </motion.div>
             ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 mt-10">
+            <Button variant="primary" type="button" className="px-6 py-3 rounded-xl text-sm" onClick={() => scrollTo('enroll')}>
+              Start with a free plan call
+            </Button>
+            <Button variant="ghost" type="button" className="px-6 py-3 rounded-xl text-sm border border-zinc-800" onClick={() => scrollTo('toppers')}>
+              See recent results
+            </Button>
           </div>
         </div>
 
@@ -150,4 +164,5 @@ export const WhyChoose = () => (
       </div>
     </div>
   </section>
-);
+  );
+};

@@ -2,8 +2,10 @@ import React from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, ChevronRight, RotateCcw, Sparkles } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useScrollToSection } from '../../hooks/useScrollToSection';
 
 export const CourseFinder = () => {
+  const scrollTo = useScrollToSection();
   const [step, setStep] = React.useState(0);
   const [answers, setAnswers] = React.useState<string[]>([]);
   const [isAnalyzing, setIsAnalyzing] = React.useState(false);
@@ -35,7 +37,7 @@ export const CourseFinder = () => {
   };
 
   return (
-    <section className="py-28 relative overflow-hidden bg-zinc-950">
+    <section id="course-finder" className="py-28 relative overflow-hidden bg-zinc-950">
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-600/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[100px] pointer-events-none" />
 
@@ -130,8 +132,15 @@ export const CourseFinder = () => {
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                  <Button variant="primary" className="px-10 py-4 text-base shadow-xl shadow-amber-900/40">Enroll in this Course</Button>
-                  <Button variant="secondary" className="px-10 py-4 text-base" onClick={reset}>
+                  <Button
+                    variant="primary"
+                    className="px-10 py-4 text-base shadow-xl shadow-amber-900/40"
+                    type="button"
+                    onClick={() => scrollTo('enroll', { courseId: 'foundation-batch' })}
+                  >
+                    Enroll in this Course
+                  </Button>
+                  <Button variant="secondary" className="px-10 py-4 text-base" type="button" onClick={reset}>
                     <RotateCcw className="w-4 h-4" /> Retake Plan Quiz
                   </Button>
                 </div>
