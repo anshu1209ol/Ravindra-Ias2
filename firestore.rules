@@ -1,0 +1,65 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: users
+    // Fields: uid, email, displayName, photoURL, role, createdAt
+    //
+    // Collection: enrollments
+    // Fields: uid, name, email, phone, courseId, status, createdAt
+    //
+    // Collection: ai_interactions (subcollection of users)
+    // Fields: uid, message, response, timestamp
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "anshulsikarwar84@gmail.com" && request.auth.token.email_verified == true));
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['uid', 'email']) &&
+             data.uid is string &&
+             data.email is string &&
+             (!('role' in data) || data.role in ['student', 'admin']);
+    }
+
+    function isValidEnrollment(data) {
+      return data.keys().hasAll(['uid', 'name', 'email', 'phone', 'courseId']) &&
+             data.uid == request.auth.uid &&
+             data.name is string && data.name.size() > 0 &&
+             data.email is string &&
+             data.phone is string && data.phone.size() >= 10;
+    }
+
+    // Rules
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && isOwner(userId) && isValidUser(request.resource.data);
+      allow update: if isOwner(userId) && isValidUser(request.resource.data) && 
+                      (request.resource.data.role == resource.data.role || isAdmin());
+    }
+
+    match /enrollments/{enrollmentId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.uid == request.auth.uid);
+      allow create: if isAuthenticated() && isValidEnrollment(request.resource.data);
+      allow update, delete: if isAdmin();
+    }
+
+    match /users/{userId}/ai_interactions/{interactionId} {
+      allow read, write: if isOwner(userId);
+    }
+  }
+}

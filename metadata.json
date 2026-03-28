@@ -1,0 +1,9 @@
+{
+  "name": "Ravindra IAS",
+  "description": "Premium UPSC coaching platform for serious aspirants. Expert mentorship, structured courses, and AI-driven guidance.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

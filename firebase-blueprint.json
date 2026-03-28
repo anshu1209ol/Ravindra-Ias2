@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "users": {
+      "title": "User",
+      "description": "User profile and enrollment data",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email"]
+    },
+    "enrollments": {
+      "title": "Enrollment",
+      "description": "Course enrollment requests",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "courseId": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "contacted", "enrolled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "name", "email", "phone", "courseId"]
+    },
+    "ai_interactions": {
+      "title": "AI Interaction",
+      "description": "Logs of user interactions with AI counselor",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "message": { "type": "string" },
+        "response": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "message", "response"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "users",
+      "description": "User profile documents"
+    },
+    "/enrollments/{enrollmentId}": {
+      "schema": "enrollments",
+      "description": "Enrollment request documents"
+    },
+    "/users/{userId}/ai_interactions/{interactionId}": {
+      "schema": "ai_interactions",
+      "description": "User specific AI interaction logs"
+    }
+  }
+}
