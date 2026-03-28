@@ -55,3 +55,12 @@ export interface CurrentAffairsItem {
   category: string;
   summary: string;
 }
+
+export interface Faculty {
+  id: string;
+  name: string;
+  subject: string;
+  expertise: string;
+  image: string;
+  experience: string;
+}

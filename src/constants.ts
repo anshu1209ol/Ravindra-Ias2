@@ -1,4 +1,4 @@
-import { Course, Topper, Testimonial, FAQ, Batch, CurrentAffairsItem } from './types';
+import { Course, Topper, Testimonial, FAQ, Batch, CurrentAffairsItem, Faculty } from './types';
 
 export const COURSES: Course[] = [
   {
@@ -121,5 +121,56 @@ export const FAQS: FAQ[] = [
   {
     question: 'Can I attend demo classes?',
     answer: 'Absolutely! You can sign up for a 3-day free demo period to experience our teaching methodology.'
+  }
+];
+
+export const FACULTIES: Faculty[] = [
+  {
+    id: '1',
+    name: 'Dr. Ravindra Singh',
+    subject: 'Polity & Governance',
+    expertise: 'Indian Constitution, Public Policy',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&h=500&auto=format&fit=crop',
+    experience: '15+ Years'
+  },
+  {
+    id: '2',
+    name: 'Prof. Anshul Bhardwaj',
+    subject: 'History & Culture',
+    expertise: 'Modern Indian History, Art & Architecture',
+    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=400&h=500&auto=format&fit=crop',
+    experience: '12+ Years'
+  },
+  {
+    id: '3',
+    name: 'Ms. Shruti Sharma',
+    subject: 'Geography & Environment',
+    expertise: 'Physical Geography, Ecology, Disaster Management',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=400&h=500&auto=format&fit=crop',
+    experience: '10+ Years'
+  },
+  {
+    id: '4',
+    name: 'Mr. Rahul Verma',
+    subject: 'Ethics & Integrity',
+    expertise: 'Case Studies, Moral Philosophy',
+    image: 'https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?q=80&w=400&h=500&auto=format&fit=crop',
+    experience: '8+ Years'
+  },
+  {
+    id: '5',
+    name: 'Dr. Meera Kapoor',
+    subject: 'Economy',
+    expertise: 'Macroeconomics, Fiscal Policy',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=400&h=500&auto=format&fit=crop',
+    experience: '14+ Years'
+  },
+  {
+    id: '6',
+    name: 'Capt. Siddharth Jain',
+    subject: 'Internal Security',
+    expertise: 'National Security, Border Management',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&h=500&auto=format&fit=crop',
+    experience: '20+ Years'
   }
 ];

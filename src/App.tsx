@@ -18,6 +18,7 @@ import { Testimonials } from './components/home/Testimonials';
 import { FAQSection } from './components/home/FAQSection';
 import { EnrollmentForm } from './components/home/EnrollmentForm';
 import { LiveTicker } from './components/home/LiveTicker';
+import { FacultySection } from './components/home/FacultySection';
 
 // Page enter animation wrapper
 const PageTransition = ({ children }: { children: React.ReactNode }) => (
@@ -39,6 +40,7 @@ const HomePage = ({ user }: { user: any }) => (
     <Courses />
     <CurrentAffairs />
     <ToppersSection />
+    <FacultySection />
     <WhyChoose />
     <CourseFinder />
     <Resources />
